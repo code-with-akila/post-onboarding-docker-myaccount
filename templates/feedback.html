@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2>Feedback</h2>
+    <p>Please answer the following. Use 1–5 where asked (1 = poor, 5 = excellent), yes/no for binary questions, or write your response for descriptive questions.</p>
+
+    <form method="post">
+        <h3>Trainer feedback questions</h3>
+
+        <div>
+            <label>1) How clearly did the trainer explain the concepts?</label><br>
+            <!-- scale 1-5 -->
+            <select name="trainer_q1" required>
+                <option value="">-- Select --</option>
+                <option value="1">1 — Very unclear</option>
+                <option value="2">2 — Somewhat unclear</option>
+                <option value="3">3 — Neutral</option>
+                <option value="4">4 — Clear</option>
+                <option value="5">5 — Very clear</option>
+            </select>
+        </div>
+
+        <div>
+            <label>2) Did the trainer use real-life examples to make topics easier to understand?</label><br>
+            <!-- yes/no -->
+            <label><input type="radio" name="trainer_q2" value="yes" required> Yes</label>
+            <label style="margin-left:12px;"><input type="radio" name="trainer_q2" value="no"> No</label>
+        </div>
+
+        <div>
+            <label>3) How well did the trainer answer your doubts and queries?</label><br>
+            <!-- scale 1-5 -->
+            <select name="trainer_q3" required>
+                <option value="">-- Select --</option>
+                <option value="1">1 — Poorly</option>
+                <option value="2">2 — Below average</option>
+                <option value="3">3 — Adequate</option>
+                <option value="4">4 — Well</option>
+                <option value="5">5 — Excellent</option>
+            </select>
+        </div>
+
+        <div>
+            <label>4) Was the trainer approachable and supportive during the sessions?</label><br>
+            <!-- yes/no -->
+            <label><input type="radio" name="trainer_q4" value="yes" required> Yes</label>
+            <label style="margin-left:12px;"><input type="radio" name="trainer_q4" value="no"> No</label>
+        </div>
+
+        <div>
+            <label>5) What improvements would you suggest for the trainer?</label><br>
+            <!-- descriptive -->
+            <textarea name="trainer_q5_text" rows="3" placeholder="Your suggestions / comments about the trainer (optional)"></textarea>
+        </div>
+
+        <h3>Curriculum feedback questions</h3>
+
+        <div>
+            <label>1) Did the topics covered match what was promised at the start of the course?</label><br>
+            <!-- yes/no -->
+            <label><input type="radio" name="curriculum_q1" value="yes" required> Yes</label>
+            <label style="margin-left:12px;"><input type="radio" name="curriculum_q1" value="no"> No</label>
+        </div>
+
+        <div>
+            <label>2) Did the curriculum cover enough hands-on practice?</label><br>
+            <!-- scale 1-5 -->
+            <select name="curriculum_q2" required>
+                <option value="">-- Select --</option>
+                <option value="1">1 — Very little</option>
+                <option value="2">2 — Somewhat little</option>
+                <option value="3">3 — Adequate</option>
+                <option value="4">4 — Good amount</option>
+                <option value="5">5 — Excellent amount</option>
+            </select>
+        </div>
+
+        <div>
+            <label>3) Which topics need improvement or deeper explanation?</label><br>
+            <!-- descriptive -->
+            <textarea name="curriculum_q3_text" rows="3" placeholder="Which topics should be expanded or explained better? (optional)"></textarea>
+        </div>
+
+        <div>
+            <label>4) Do you think the curriculum should add/remove any topics?</label><br>
+            <!-- descriptive -->
+            <textarea name="curriculum_q4_text" rows="3" placeholder="Add/remove suggestions (optional)"></textarea>
+        </div>
+
+        <div>
+            <label>5) Overall, how satisfied are you with the curriculum?</label><br>
+            <!-- scale 1-5 -->
+            <select name="curriculum_q5" required>
+                <option value="">-- Select --</option>
+                <option value="1">1 — Very dissatisfied</option>
+                <option value="2">2 — Dissatisfied</option>
+                <option value="3">3 — Neutral</option>
+                <option value="4">4 — Satisfied</option>
+                <option value="5">5 — Very satisfied</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Additional Comments</label><br>
+            <textarea name="comments" rows="3" placeholder="Any additional feedback (optional)"></textarea>
+        </div>
+
+        <hr style="margin:18px 0; border:none; border-top:1px solid #eef2f6;">
+
+        <div>
+            <label style="display:block; margin-bottom:8px; font-weight:700;">Rate the entire training</label>
+            <!-- star widget -->
+            <div id="star-rating" aria-label="Overall training rating" style="font-size:26px; line-height:1;">
+                <span class="star" data-value="1" role="button" aria-label="1 star">☆</span>
+                <span class="star" data-value="2" role="button" aria-label="2 stars">☆</span>
+                <span class="star" data-value="3" role="button" aria-label="3 stars">☆</span>
+                <span class="star" data-value="4" role="button" aria-label="4 stars">☆</span>
+                <span class="star" data-value="5" role="button" aria-label="5 stars">☆</span>
+            </div>
+            <input type="hidden" name="overall_rating" id="overall_rating" value="">
+            <div class="small" id="star-help" style="margin-top:6px; color:var(--muted);">Click a star to rate (1–5)</div>
+        </div>
+
+        <div style="margin-top:14px;">
+            <button class="btn btn-primary" type="submit">Submit Feedback</button>
+        </div>
+    </form>
+</div>
+
+<!-- inline JS/CSS for star widget (you can move this to static files if you prefer) -->
+<style>
+    /* small star styles */
+    #star-rating .star { cursor:pointer; padding: 2px 6px; color: #c7d2fe; user-select:none; }
+    #star-rating .star.filled { color: #f59e0b; }  /* amber for filled stars */
+    #star-rating .star:hover, #star-rating .star.hover { color: #fbbf24; }
+    /* small spacing for radio groups */
+    form div label input[type="radio"] { margin-left:8px; margin-right:6px; }
+</style>
+
+<script>
+(function(){
+    const stars = document.querySelectorAll('#star-rating .star');
+    const hidden = document.getElementById('overall_rating');
+    const help = document.getElementById('star-help');
+
+    function setStars(value){
+        stars.forEach(s => {
+            const v = Number(s.getAttribute('data-value'));
+            s.classList.toggle('filled', v <= value);
+        });
+        hidden.value = value;
+        if(value) help.textContent = "You rated this training " + value + " / 5";
+        else help.textContent = "Click a star to rate (1–5)";
+    }
+
+    // click to set rating
+    stars.forEach(s => {
+        s.addEventListener('click', function(){
+            const v = Number(this.getAttribute('data-value'));
+            setStars(v);
+        });
+        s.addEventListener('mouseover', function(){
+            const v = Number(this.getAttribute('data-value'));
+            stars.forEach(x => {
+                x.classList.toggle('hover', Number(x.getAttribute('data-value')) <= v);
+            });
+        });
+        s.addEventListener('mouseout', function(){
+            stars.forEach(x => x.classList.remove('hover'));
+        });
+    });
+
+    // if you want to default-fill any value, uncomment:
+    // setStars(4);
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2>Welcome, {{ trainer.name }}</h2>
+    <p>This is your trainer dashboard. Manage batches, employees, and evaluations.</p>
+
+    <h3>Add New Batch</h3>
+    <form method="post" action="{{ url_for('add_batch') }}">
+        <div>
+            <label>Batch Name</label><br>
+            <input type="text" name="name" required>
+        </div>
+        <div>
+            <label>Domain</label><br>
+            <input type="text" name="domain">
+        </div>
+        <div>
+            <label>Start Date</label><br>
+            <input type="date" name="start_date">
+        </div>
+        <button class="btn btn-primary" type="submit">Create Batch</button>
+    </form>
+</div>
+
+<div class="card">
+    <h3>Your Batches</h3>
+    {% if batches %}
+        <ul>
+        {% for batch in batches %}
+            <li>
+                <strong>{{ batch.name }}</strong> ({{ batch.domain or 'No domain' }}) -
+                <a href="{{ url_for('batch_detail', batch_id=batch.id) }}">Open</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No batches yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

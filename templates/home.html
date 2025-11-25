@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card hero-card">
+  <div class="hero-left">
+    <h2 class="section-title">Select User Type</h2>
+    <p class="section-sub">Please choose how you want to enter the portal.</p>
+    <p class="small">If you are a trainer, manage batches and evaluations. If you are an employee, track your progress and interviews.</p>
+  </div>
+
+  <div class="hero-right">
+    <div class="user-grid">
+      <div class="user-card">
+        <div class="uc-head">
+          <div class="uc-title">Trainer</div>
+          <div class="uc-desc small">Manage batches & evaluations</div>
+        </div>
+        <div class="uc-actions">
+          <a class="btn btn-primary" href="{{ url_for('login_trainer') }}">Login</a>
+          <a class="btn btn-outline" href="{{ url_for('register_trainer') }}">Register</a>
+        </div>
+      </div>
+
+      <div class="user-card">
+        <div class="uc-head">
+          <div class="uc-title">Employee</div>
+          <div class="uc-desc small">View progress & give feedback</div>
+        </div>
+        <div class="uc-actions">
+          <a class="btn btn-primary" href="{{ url_for('login_employee') }}">Login</a>
+          <a class="btn btn-outline" href="{{ url_for('register_employee') }}">Register</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

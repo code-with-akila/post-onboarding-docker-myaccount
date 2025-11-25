@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Freshers Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="top-nav">
+        <div class="logo">Freshers Management</div>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            {% if session.get('role') == 'trainer' %}
+                <a href="{{ url_for('trainer_dashboard') }}">Trainer Dashboard</a>
+                <a href="{{ url_for('trainer_logout') }}">Logout</a>
+            {% elif session.get('role') == 'employee' %}
+                <a href="{{ url_for('employee_dashboard') }}">Employee Dashboard</a>
+                <a href="{{ url_for('employee_logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login_trainer') }}">Trainer Login</a>
+                <a href="{{ url_for('login_employee') }}">Employee Login</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="content">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for msg in messages %}
+                    <div class="flash">{{ msg }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+        <div class="back-button">
+            <button onclick="history.back()">← Go Back</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        © {{ 2025 }} Freshers Management Portal
+    </footer>
+</body>
+</html>

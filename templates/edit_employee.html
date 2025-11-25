@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2>Edit Employee</h2>
+    <form method="post">
+        <div>
+            <label>Name</label><br>
+            <input type="text" name="name" value="{{ employee.name }}" required>
+        </div>
+        <div>
+            <label>Domain</label><br>
+            <input type="text" name="domain" value="{{ employee.domain or '' }}">
+        </div>
+        <div>
+            <label>Date of Joining</label><br>
+            <input type="date" name="doj" value="{{ employee.doj }}">
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+</div>
+{% endblock %}

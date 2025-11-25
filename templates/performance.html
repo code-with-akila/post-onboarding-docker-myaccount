@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="section-title">Performance - Batch: {{ batch.name }}</div>
+  <div class="section-sub">Per-assessment status (small) and overall result</div>
+
+  {% if rows %}
+    <table class="table" role="table" aria-label="Performance">
+      <thead>
+        <tr>
+          <th>Emp ID</th><th>Name</th>
+          <th>M1</th><th>M1</th>
+          <th>Sprint</th><th>Sprint</th>
+          <th>L1</th><th>L1</th>
+          <th>Aggregate</th><th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td>#{{ r.employee.id }}</td>
+          <td>{{ r.employee.name }}</td>
+
+          <!-- M1 value and small status -->
+          <td>{{ r.m1 if r.m1 is not none else '-' }}</td>
+          <td>
+            {% if r.m1_status == 'Pass' %}
+              <span class="small pill pass" style="padding:3px 6px; font-size:12px; font-weight:700;">Pass</span>
+            {% elif r.m1_status == 'Fail' %}
+              <span class="small pill fail" style="padding:3px 6px; font-size:12px; font-weight:700;">Fail</span>
+            {% else %}
+              <span class="small">-</span>
+            {% endif %}
+          </td>
+
+          <!-- Sprint -->
+          <td>{{ r.sprint if r.sprint is not none else '-' }}</td>
+          <td>
+            {% if r.sprint_status == 'Pass' %}
+              <span class="small pill pass" style="padding:3px 6px; font-size:12px; font-weight:700;">Pass</span>
+            {% elif r.sprint_status == 'Fail' %}
+              <span class="small pill fail" style="padding:3px 6px; font-size:12px; font-weight:700;">Fail</span>
+            {% else %}
+              <span class="small">-</span>
+            {% endif %}
+          </td>
+
+          <!-- L1 -->
+          <td>{{ r.l1 if r.l1 is not none else '-' }}</td>
+          <td>
+            {% if r.l1_status == 'Pass' %}
+              <span class="small pill pass" style="padding:3px 6px; font-size:12px; font-weight:700;">Pass</span>
+            {% elif r.l1_status == 'Fail' %}
+              <span class="small pill fail" style="padding:3px 6px; font-size:12px; font-weight:700;">Fail</span>
+            {% else %}
+              <span class="small">-</span>
+            {% endif %}
+          </td>
+
+          <td>{{ r.aggregate }}</td>
+          <td>
+            {% if r.final_result == 'Pass' %}
+              <span class="pill pass">Pass</span>
+            {% elif r.final_result == 'Fail' %}
+              <span class="pill fail">Fail</span>
+            {% else %}
+              <span class="small">-</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="small">No employees in this batch yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

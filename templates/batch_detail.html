@@ -1,0 +1,125 @@
+
+
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="section-title">Batch: {{ batch.name }}</div>
+  <div class="section-sub">Domain: {{ batch.domain or '-' }} &nbsp; | &nbsp; Start: {{ batch.start_date or '-' }}</div>
+
+  <div class="button-row" style="margin-top:8px;">
+    <a class="btn btn-muted" href="{{ url_for('view_performance', batch_id=batch.id) }}">View Performance</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-title">Employees in this Batch</div>
+  {% if employees %}
+    <table class="table" role="table" aria-label="Employees">
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Domain</th><th>DOJ</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for emp in employees %}
+        <tr>
+          <td>#{{ emp.id }}</td>
+          <td>{{ emp.name }}</td>
+          <td>{{ emp.domain or '-' }}</td>
+          <td>{{ emp.doj or '-' }}</td>
+          <td>
+            <a class="btn btn-muted" href="{{ url_for('edit_employee', employee_id=emp.id) }}">Edit</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="small">No employees assigned to this batch yet.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="section-title">Assign Employee to this Batch</div>
+  <div class="section-sub">Select from all registered employees below and assign a domain for them</div>
+
+  <form method="post" action="{{ url_for('assign_employee_to_batch') }}">
+    <div>
+      <label>Employee</label><br>
+      <select name="employee_id" required>
+        <option value="">-- Select employee --</option>
+        {% for emp in all_employees %}
+          <option value="{{ emp.id }}">
+            #{{ emp.id }} — {{ emp.name }} {% if emp.batch_id %}(assigned to {{ emp.batch.name }}){% endif %}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div style="margin-top:8px;">
+      <label>Assign Domain to Employee</label><br>
+      <input type="text" name="domain" placeholder="e.g. devops, frontend, data">
+    </div>
+
+    <input type="hidden" name="batch_id" value="{{ batch.id }}">
+    <div class="button-row">
+      <button class="btn btn-primary" type="submit">Assign</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="section-title">Evaluations</div>
+  <div class="section-sub">Update evaluation for an employee by selecting their ID</div>
+
+  <form method="post" action="{{ url_for('edit_evaluation', employee_id=0) }}" onsubmit="
+        this.action = this.action.replace('/0', '/' + this.emp_id.value);
+    ">
+    <div>
+      <label>Employee ID</label><br>
+      <input type="number" name="emp_id" id="emp_id" required>
+    </div>
+    <div>
+      <label>M1 Marks</label><br>
+      <input type="number" name="m1_marks" min="0" max="100">
+    </div>
+    <div>
+      <label>Sprint Marks</label><br>
+      <input type="number" name="sprint_marks" min="0" max="100">
+    </div>
+    <div>
+      <label>L1 Marks</label><br>
+      <input type="number" name="l1_marks" min="0" max="100">
+    </div>
+    <input type="hidden" name="batch_id" value="{{ batch.id }}">
+    <div class="button-row">
+      <button class="btn btn-primary" type="submit">Save Evaluation</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="section-title">Interview Allocation</div>
+  <div class="section-sub">Only for employees who have passed the evaluations</div>
+
+  <form method="post" action="{{ url_for('allocate_project', employee_id=0) }}" onsubmit="
+        this.action = this.action.replace('/0', '/' + this.emp_id_alloc.value);
+    ">
+    <div>
+      <label>Employee ID</label><br>
+      <input type="number" name="emp_id_alloc" id="emp_id_alloc" required>
+    </div>
+    <div>
+      <label>Interview Date</label><br>
+      <input type="date" name="interview_date">
+    </div>
+    <div>
+      <label>Project Domain</label><br>
+      <input type="text" name="project_domain" placeholder="e.g. devops, frontend, data">
+    </div>
+    <div class="button-row">
+      <button class="btn btn-primary" type="submit">Allocate</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

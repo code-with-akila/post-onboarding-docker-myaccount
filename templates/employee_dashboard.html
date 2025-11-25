@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="greeting">Hello, {{ employee.name }}</p>
+  <p class="info-row">Employee ID: <strong>#{{ employee.id }}</strong> &nbsp; | &nbsp;
+    Domain: {{ employee.domain or '-' }} &nbsp; | &nbsp; DOJ: {{ employee.doj or '-' }}</p>
+</div>
+
+<div class="card">
+  <div class="section-title">Training Progress & Evaluations</div>
+  <div class="section-sub">Your tests completed, marks and result</div>
+
+  <!-- inside employee_dashboard.html evaluations table -->
+{% if evaluations %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Batch</th><th>M1</th><th>Sprint</th><th>L1</th><th>Aggregate</th><th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for eval in evaluations %}
+      <tr>
+        <td>{{ eval.batch.name }}</td>
+
+        <td>
+          {{ eval.m1_marks if eval.m1_marks is not none else '-' }}
+          {% if eval.m1_marks is not none %}
+            <small>
+              {% if eval.m1_marks >= 60 %}<span class="pill pass" style="padding:3px 6px; font-size:12px;">Pass</span>
+              {% else %}<span class="pill fail" style="padding:3px 6px; font-size:12px;">Fail</span>{% endif %}
+            </small>
+          {% endif %}
+        </td>
+
+        <td>
+          {{ eval.sprint_marks if eval.sprint_marks is not none else '-' }}
+          {% if eval.sprint_marks is not none %}
+            <small>
+              {% if eval.sprint_marks >= 60 %}<span class="pill pass" style="padding:3px 6px; font-size:12px;">Pass</span>
+              {% else %}<span class="pill fail" style="padding:3px 6px; font-size:12px;">Fail</span>{% endif %}
+            </small>
+          {% endif %}
+        </td>
+
+        <td>
+          {{ eval.l1_marks if eval.l1_marks is not none else '-' }}
+          {% if eval.l1_marks is not none %}
+            <small>
+              {% if eval.l1_marks >= 60 %}<span class="pill pass" style="padding:3px 6px; font-size:12px;">Pass</span>
+              {% else %}<span class="pill fail" style="padding:3px 6px; font-size:12px;">Fail</span>{% endif %}
+            </small>
+          {% endif %}
+        </td>
+
+        <td>{{ ('%.2f' % eval.aggregate) if eval.aggregate is not none else '-' }}</td>
+
+        <td>
+          {% if eval.m1_marks is not none and eval.sprint_marks is not none and eval.l1_marks is not none %}
+            {% if eval.aggregate is not none and eval.aggregate >= 60 and eval.m1_marks >= 60 and eval.sprint_marks >= 60 and eval.l1_marks >= 60 %}
+              <span class="pill pass">Pass</span>
+            {% else %}
+              <span class="pill fail">Fail</span>
+            {% endif %}
+          {% else %}
+            <span class="small">-</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="small">No evaluations recorded yet.</p>
+{% endif %}
+
+
+<div class="card">
+  <div class="section-title">Interview Schedule & Project Allocation</div>
+  <div class="section-sub">Scheduled interviews and allocated domains</div>
+
+  {% if allocations %}
+    <table class="table" role="table" aria-label="Allocations">
+      <thead>
+        <tr>
+          <th>Interview Date</th><th>Domain</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alloc in allocations %}
+        <tr>
+          <td>{{ alloc.interview_date or '-' }}</td>
+          <td>{{ alloc.project_domain or '-' }}</td>
+          <td>{{ alloc.status or '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="small">No project allocation yet.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="section-title">Feedback</div>
+  <div class="button-row">
+    <a class="btn btn-primary" href="{{ url_for('feedback') }}">Give Feedback</a>
+  </div>
+</div>
+{% endblock %}
