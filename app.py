@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'change_this_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
-    'SQLALCHEMY_DATABSE_URI',
+    'SQLALCHEMY_DATABASE_URI',
     'mysql+pymysql://root:rootpassword@db:3306/fresher_mng'
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
