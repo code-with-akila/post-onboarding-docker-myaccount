@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-onboarding-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: post-onboarding
+  template:
+    metadata:
+      labels:
+        app: post-onboarding
+    spec:
+      containers:
+      - name: post-onboarding
+        image: 738408430142.dkr.ecr.ap-south-1.amazonaws.com/post-onboarding-docker:latest
+        ports:
+        - containerPort: 5000
+
