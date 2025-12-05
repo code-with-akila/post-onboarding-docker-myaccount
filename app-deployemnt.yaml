@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-onboarding-app
+  labels:
+    app: post-onboarding-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: post-onboarding-app
+  template:
+    metadata:
+      labels:
+        app: post-onboarding-app
+    spec:
+      containers:
+        - name: post-onboarding-app
+          image: 738408430142.dkr.ecr.ap-south-1.amazonaws.com/post-onboarding-docker-myaccount:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE_HOST
+              value: "mysql-service"
+            - name: DATABASE_USER
+              value: "root"
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-onboarding-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: post-onboarding-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+

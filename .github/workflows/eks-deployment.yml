@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-onboarding-deployment
+  labels:
+    app: post-onboarding-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post-onboarding-app
+  template:
+    metadata:
+      labels:
+        app: post-onboarding-app
+    spec:
+      containers:
+        - name: post-onboarding-container
+          image: 738408430142.dkr.ecr.us-east-1.amazonaws.com/post-onboarding-docker-myaccount:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AWS_REGION
+              value: "us-east-1"
+            # Add more environment variables if your app needs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-onboarding-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: post-onboarding-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
